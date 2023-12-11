@@ -1,4 +1,8 @@
+import 'package:allyyuegbk/Cubits/DataCubit/data_Cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../Cubits/DataCubit/data_State.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -29,8 +33,7 @@ class _CartState extends State<Cart> {
                   ),
                   Text(
                     'My Cart',
-                    style:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -45,8 +48,8 @@ class _CartState extends State<Cart> {
 
   int x = 1;
   Widget _listOfItems() => Container(
-    width: 360,
-    height: 800,
+        width: 360,
+        height: 800,
         child: ListView.separated(
           itemBuilder: (context, index) => _items(),
           physics: BouncingScrollPhysics(),
@@ -56,8 +59,6 @@ class _CartState extends State<Cart> {
           separatorBuilder: (context, index) => SizedBox(
             height: 20,
           ),
-
-
         ),
       );
   Widget _items() => Container(
@@ -133,23 +134,23 @@ class _CartState extends State<Cart> {
           ],
         ),
       );
-  Widget _button()=> Column(
-    children: [
-      Container(
-        width: 350,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: Colors.orange.shade800,
-        ),
-        child: TextButton(
-          child: Text('Buy Now', style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold,fontSize: 18)),
-          onPressed: () {
-
-          },
-
-        ),
-      ),
-    ],
-  );
+  Widget _button() => Column(
+        children: [
+          Container(
+            width: 350,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              color: Colors.orange.shade800,
+            ),
+            child: TextButton(
+              child: Text('Buy Now',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18)),
+              onPressed: () {},
+            ),
+          ),
+        ],
+      );
 }

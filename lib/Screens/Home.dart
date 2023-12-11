@@ -160,8 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisSpacing: 3),
               itemCount: BlocProvider.of<DataCubit>(context).prodcuts.length,
               itemBuilder: (context, index) {
-                ProductsModel? model = ProductsModel.fromjson(
-                    BlocProvider.of<DataCubit>(context).prodcuts[index]);
+                final model = BlocProvider.of<DataCubit>(context).prodcuts[index];
                 return _products(model);
               },
             );

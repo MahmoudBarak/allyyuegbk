@@ -7,3 +7,11 @@ class GetDataFailureState extends DataState{
   GetDataFailureState(this.errmessage);
 
 }
+
+class LodingCartsState extends DataState{}
+class GetCartsSuccessState extends DataState{}
+class GetCartsFailureState extends DataState{
+  String errmessage;
+  GetCartsFailureState(this.errmessage);
+
+}
