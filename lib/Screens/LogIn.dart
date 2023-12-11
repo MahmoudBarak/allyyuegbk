@@ -1,7 +1,7 @@
-import 'package:allyyuegbk/Screens/Home.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/data_Cubit.dart';
 import 'package:allyyuegbk/Screens/SignUp.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bottomNavigationBar.dart';
 
@@ -35,13 +35,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text(
                         'Log in',
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold,fontSize: 25),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25),
                       )
                     ],
                   ),
-                  Image.asset('assets/Images/Logo.png',height: 300,),
-
-
+                  Image.asset(
+                    'assets/Images/Logo.png',
+                    height: 300,
+                  ),
                   SizedBox(height: 40),
                   Container(
                     width: 300,
@@ -52,50 +55,75 @@ class _LoginScreenState extends State<LoginScreen> {
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20)),
                               labelText: 'Email',
                               suffixIcon: Icon(Icons.email)),
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(
+                          height: 30,
+                        ),
                         TextFormField(
                           controller: _password,
                           keyboardType: TextInputType.number,
                           textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20)),
                               labelText: 'Password',
                               suffixIcon: Icon(Icons.visibility)),
                         ),
-                        SizedBox(height: 40,),
+                        SizedBox(
+                          height: 40,
+                        ),
                         Container(
                           width: 200,
                           child: TextButton(
-                            child: Text('Log in', style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.bold)),
+                            child: Text('Log in',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                             onPressed: () {
-                              Navigator.of(context)
-                                  .pushAndRemoveUntil(
+
+                               BlocProvider.of<DataCubit>(context).getData();
+
+
+
+
+
+                              Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                     builder: (_) => Bar(),
                                   ),
-                                      (route) => false);
+                                  (route) => false);
                             },
                             style: TextButton.styleFrom(
                                 backgroundColor: Colors.orange),
                           ),
                         ),
-                        SizedBox(height: 20,),
-                        Divider(color: Colors.black,),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Divider(
+                          color: Colors.black,
+                        ),
                         Column(
                           children: [
-
-                          Text('Don’t Have Account?',style: TextStyle(fontWeight: FontWeight.bold,)),
-                          TextButton(onPressed: (){
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => SignUpScreen()));
-                          }, child: Text('Sign Up' ,style: TextStyle(
-                              color: Colors.orange, fontWeight: FontWeight.bold)))
-                        ],),
+                            Text('Don’t Have Account?',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => SignUpScreen()));
+                                },
+                                child: Text('Sign Up',
+                                    style: TextStyle(
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.bold)))
+                          ],
+                        ),
                       ],
                     ),
                   )

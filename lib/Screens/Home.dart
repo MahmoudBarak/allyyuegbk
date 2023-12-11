@@ -1,6 +1,10 @@
+import 'package:allyyuegbk/Cubits/DataCubit/data_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/data_State.dart';
 import 'package:allyyuegbk/Screens/Product.dart';
+import 'package:allyyuegbk/models/products_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'Cart.dart';
 
@@ -12,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                _searhAndCart(),
+                _searchAndCart(),
                 SizedBox(
                   height: 15,
                 ),
@@ -44,65 +47,85 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  final List<Widget> images=[
+
+  final List<Widget> images = [
     Image.asset('assets/Images/Sale.jpg'),
-    Image.asset( 'assets/Images/Soon.jpg'),
-
+    Image.asset('assets/Images/Soon.jpg'),
   ];
-  Widget _searhAndCart()=> Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Container(
-        decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(10)),
-        width: 303,
-        child: TextFormField(
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.go,
-          decoration: InputDecoration(
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              hintText: "Find Your Product",
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              prefixIcon: Icon(
-                Icons.search_outlined,
-                color: Colors.black,
-              )),
-        ),
-      ),
-      Container(
-          decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(10)),
-          width: 40,
-          child: IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Cart()));
-
-              },
-              icon: Icon(
-                Icons.shopping_cart,
-              )))
-    ],
-  );
+  Widget _searchAndCart() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(10)),
+            width: 303,
+            child: TextFormField(
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.go,
+              decoration: InputDecoration(
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  hintText: "Find Your Product",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  prefixIcon: Icon(
+                    Icons.search_outlined,
+                    color: Colors.black,
+                  )),
+            ),
+          ),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(10)),
+              width: 40,
+              child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => Cart()));
+                  },
+                  icon: Icon(
+                    Icons.shopping_cart,
+                  )))
+        ],
+      );
   Widget _barList() => Container(
-        height: 50,
-        child: ListView.separated(
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => _bar(),
-            separatorBuilder: (context, index) => SizedBox(
+    height: 50,
+    child: BlocBuilder<DataCubit, DataState>(
+          builder: (context, state) {
+            if (state is LodingDataState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is GetDataSuccessState) {
+              return ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(
                   width: 5,
                 ),
-            itemCount: 5),
-      );
-  Widget _bar() => Container(
+                itemCount:
+                    BlocProvider.of<DataCubit>(context).categories.length,
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  String categories =
+                      BlocProvider.of<DataCubit>(context).categories[index];
+                  return _bar(categories);
+                },
+              );
+            } else if (state is GetDataFailureState) {
+              return Text('${state.errmessage}');
+            } else {
+              print(BlocProvider.of<DataCubit>(context).categories);
+              return Text('check the code');
+            }
+          },
+        ),
+  );
+  Widget _bar(String categories) => Container(
         margin: EdgeInsets.all(10),
-        height: 30,
-        width: 100,
+        height: 40,
+        width: 130,
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -115,36 +138,51 @@ class _HomeScreenState extends State<HomeScreen> {
         child: InkWell(
           onTap: () {},
           child: Row(
-            children: [
-              Icon(Icons.image),
-              SizedBox(
-                width: 6,
-              ),
-              Text('Watch')
-            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [Text(categories)],
           ),
         ),
       );
-  Widget _items() => GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: .6,
-            mainAxisSpacing: 3,
-            crossAxisSpacing: 3),
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return _products();
+  Widget _items() => BlocBuilder<DataCubit, DataState>(
+        builder: (context, state) {
+          if (state is LodingDataState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is GetDataSuccessState) {
+            return GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: .6,
+                  mainAxisSpacing: 3,
+                  crossAxisSpacing: 3),
+              itemCount: BlocProvider.of<DataCubit>(context).prodcuts.length,
+              itemBuilder: (context, index) {
+                ProductsModel? model = ProductsModel.fromjson(
+                    BlocProvider.of<DataCubit>(context).prodcuts[index]);
+                return _products(model);
+              },
+            );
+          }else if (state is GetDataFailureState){
+            return Text('${state.errmessage}');
+            
+          } 
+          else {
+            return Center(
+              child: Text("Something Is Wrong"),
+            );
+          }
         },
       );
-  Widget _products() => InkWell(
+  Widget _products(ProductsModel model) => InkWell(
         borderRadius: BorderRadius.circular(19),
         highlightColor: Colors.orange,
         splashColor: Colors.orange,
         onTap: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Product()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => Product()));
         },
         child: Container(
           margin: EdgeInsets.all(4),
@@ -161,12 +199,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/Images/shooe_tilt_1.png',
-                    height: 200,
+                  Image.network(
+                    '${model.image}',
+                    height: 120,
                   ),
                   Container(
-                    height: 68,
+                    height: 150,
                     width: 195,
                     padding: EdgeInsets.all(8),
                     margin: EdgeInsets.all(3),
@@ -180,7 +218,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Nike Shoes',
+                          '${model.name}',
+                          maxLines: 3,
                           style: TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.bold,
@@ -188,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          '100\$',
+                          '${model.price}\$',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 19,
@@ -211,12 +250,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
   Widget _bannerList() => CarouselSlider(
-          items:images,
-          options: CarouselOptions(
-            autoPlay: true,
-            aspectRatio: 2.0,
-            enlargeCenterPage: true,
-
-          )
-      );
+      items: images,
+      options: CarouselOptions(
+        autoPlay: true,
+        aspectRatio: 2.0,
+        enlargeCenterPage: true,
+      ));
 }
