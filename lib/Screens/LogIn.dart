@@ -1,4 +1,5 @@
-import 'package:allyyuegbk/Cubits/DataCubit/data_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/categories_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/products_Cubit.dart';
 import 'package:allyyuegbk/Screens/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,8 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold)),
                             onPressed: () {
+                              BlocProvider.of<CategoriesCubit>(context).getCategories();
 
-                               BlocProvider.of<DataCubit>(context).getData();
+                               BlocProvider.of<ProductCubit>(context).getProducts();
 
 
 

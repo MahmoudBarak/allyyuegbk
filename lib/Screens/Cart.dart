@@ -1,8 +1,8 @@
-import 'package:allyyuegbk/Cubits/DataCubit/data_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/products_Cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Cubits/DataCubit/data_State.dart';
+import '../Cubits/DataCubit/product_State.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);

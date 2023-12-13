@@ -27,4 +27,14 @@ class Network {
     return listOfCarts;
 
   }
+  Future<ProductsModel> getSingleProduct(int productId) async{
+
+    final response=await Dio().get('https://fakestoreapi.com/products/$productId');
+    final product=ProductsModel.fromjson(response.data);
+    return product;
+
+  }
+
+
+
 }

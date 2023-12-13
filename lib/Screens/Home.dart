@@ -1,5 +1,8 @@
-import 'package:allyyuegbk/Cubits/DataCubit/data_Cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/data_State.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/categories_State.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/categories_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/products_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/product_State.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/single_product_cubit.dart';
 import 'package:allyyuegbk/Screens/Product.dart';
 import 'package:allyyuegbk/models/products_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -16,15 +19,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20),
             child: Column(
               children: [
                 _searchAndCart(),
@@ -92,32 +95,32 @@ class _HomeScreenState extends State<HomeScreen> {
       );
   Widget _barList() => Container(
     height: 50,
-    child: BlocBuilder<DataCubit, DataState>(
+    child: BlocBuilder<CategoriesCubit , CategoriesState>(
           builder: (context, state) {
-            if (state is LodingDataState) {
+            if (state is LoadingCategoriesState) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (state is GetDataSuccessState) {
+            } else if (state is GetCategoriesSuccessState) {
               return ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(
                   width: 5,
                 ),
                 itemCount:
-                    BlocProvider.of<DataCubit>(context).categories.length,
+                    BlocProvider.of<CategoriesCubit>(context).categories.length,
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   String categories =
-                      BlocProvider.of<DataCubit>(context).categories[index];
+                      BlocProvider.of<CategoriesCubit>(context).categories[index];
                   return _bar(categories);
                 },
               );
-            } else if (state is GetDataFailureState) {
+            } else if (state is GetCategoriesFailureState) {
               return Text('${state.errmessage}');
             } else {
-              print(BlocProvider.of<DataCubit>(context).categories);
-              return Text('check the code');
+              print(BlocProvider.of<CategoriesCubit>(context).categories);
+              return Text('${state.toString()}');
             }
           },
         ),
@@ -143,13 +146,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       );
-  Widget _items() => BlocBuilder<DataCubit, DataState>(
+  Widget _items() => BlocBuilder<ProductCubit, DataState>(
         builder: (context, state) {
-          if (state is LodingDataState) {
+          if (state is LoadingProductsState) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is GetDataSuccessState) {
+          } else if (state is GetProductsSuccessState) {
             return GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -158,16 +161,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   childAspectRatio: .6,
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 3),
-              itemCount: BlocProvider.of<DataCubit>(context).prodcuts.length,
+              itemCount: BlocProvider.of<ProductCubit>(context).prodcuts.length,
               itemBuilder: (context, index) {
-                final model = BlocProvider.of<DataCubit>(context).prodcuts[index];
+                final model = BlocProvider.of<ProductCubit>(context).prodcuts[index];
                 return _products(model);
               },
             );
-          }else if (state is GetDataFailureState){
+          }else if (state is GetProductsFailureState){
             return Text('${state.errmessage}');
-            
-          } 
+
+          }
           else {
             return Center(
               child: Text("Something Is Wrong"),
@@ -180,8 +183,16 @@ class _HomeScreenState extends State<HomeScreen> {
         highlightColor: Colors.orange,
         splashColor: Colors.orange,
         onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Product()));
+          BlocProvider.of<SingleProCubit>(context).getSingleProduct(model.id!);
+
+
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => Product()
+          ));
+
+
+          // Navigator.of(context)
+          //     .push(MaterialPageRoute(builder: (context) => ));
         },
         child: Container(
           margin: EdgeInsets.all(4),
