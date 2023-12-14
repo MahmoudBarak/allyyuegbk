@@ -1,6 +1,6 @@
 
 
-import 'package:allyyuegbk/Cubits/DataCubit/product_State.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/product_State.dart';
 import 'package:allyyuegbk/Services/dio_helper.dart';
 import 'package:allyyuegbk/models/cartModel.dart';
 import 'package:allyyuegbk/models/products_model.dart';

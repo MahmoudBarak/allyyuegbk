@@ -1,8 +1,10 @@
-import 'package:allyyuegbk/Cubits/DataCubit/categories_State.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/categories_cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/products_Cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/product_State.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/single_product_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/Show_categories_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/categories_State.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/categories_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/products_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/product_State.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_cubit.dart';
+import 'package:allyyuegbk/Screens/PageOfCategory.dart';
 import 'package:allyyuegbk/Screens/Product.dart';
 import 'package:allyyuegbk/models/products_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -139,7 +141,11 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.grey.shade200),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            BlocProvider.of<ShowCategory>(context).getCategory(categories);
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) =>CategoryPage()));
+          },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [Text(categories)],
@@ -187,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
           Navigator.push(context, MaterialPageRoute(
-              builder: (context) => Product()
+              builder: (context) => OneProduct()
           ));
 
 

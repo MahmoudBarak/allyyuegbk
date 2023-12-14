@@ -1,7 +1,8 @@
 import 'package:allyyuegbk/Cubits/AppCubit/App_cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/categories_cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/products_Cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/single_product_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/Show_categories_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/categories_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/products_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_cubit.dart';
 import 'package:allyyuegbk/Screens/Splash.dart';
 import 'package:allyyuegbk/Services/dio_helper.dart';
 import 'package:allyyuegbk/models/products_model.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context)=>ProductCubit(Network())),
         BlocProvider(create: (context)=>SingleProCubit(Network(),ProductsModel())),
         BlocProvider(create: (context)=>CategoriesCubit (Network())),
+        BlocProvider(create: (context)=> ShowCategory(Network())),
 
 
       ] ,

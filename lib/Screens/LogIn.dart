@@ -1,5 +1,5 @@
-import 'package:allyyuegbk/Cubits/DataCubit/categories_cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/products_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/categories_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/products_Cubit.dart';
 import 'package:allyyuegbk/Screens/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

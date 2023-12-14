@@ -1,4 +1,4 @@
-import 'package:allyyuegbk/Cubits/DataCubit/single_product_state.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_state.dart';
 import 'package:allyyuegbk/Services/dio_helper.dart';
 import 'package:allyyuegbk/models/products_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

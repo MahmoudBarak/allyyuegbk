@@ -1,5 +1,8 @@
+import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/categories_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/products_Cubit.dart';
 import 'package:allyyuegbk/Screens/bottomNavigationBar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -92,6 +95,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: Text('Sign up', style: TextStyle(
                                 color: Colors.black, fontWeight: FontWeight.bold)),
                             onPressed: () {
+                              BlocProvider.of<CategoriesCubit>(context).getCategories();
+
+                              BlocProvider.of<ProductCubit>(context).getProducts();
                               Navigator.of(context)
                                   .pushAndRemoveUntil(
                                   MaterialPageRoute(

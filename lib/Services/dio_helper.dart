@@ -34,6 +34,14 @@ class Network {
     return product;
 
   }
+  Future<List<ProductsModel>> getCategory(String cat) async {
+    final responsep = await Dio().get('https://fakestoreapi.com/products/category/${cat}');
+    final category = List.from(responsep.data)
+        .map((e) => ProductsModel.fromjson(e))
+        .toList();
+
+    return category;
+  }
 
 
 

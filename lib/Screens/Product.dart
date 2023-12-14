@@ -1,20 +1,20 @@
-import 'package:allyyuegbk/Cubits/DataCubit/products_Cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/product_State.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/single_product_cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/single_product_state.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/products_Cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/product_State.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_cubit.dart';
+import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_state.dart';
 import 'package:allyyuegbk/models/products_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Product extends StatefulWidget {
-  const Product({Key? key}) : super(key: key);
+class OneProduct extends StatefulWidget {
+  const OneProduct({Key? key}) : super(key: key);
 
   @override
-  State<Product> createState() => _ProductState();
+  State<OneProduct> createState() => _OneProductState();
 }
 
-class _ProductState extends State<Product> {
+class _OneProductState extends State<OneProduct> {
 
   @override
   Widget build(BuildContext context) {
