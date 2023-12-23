@@ -1,9 +1,6 @@
-import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/products_Cubit.dart';
-import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/product_State.dart';
 import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_cubit.dart';
 import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_state.dart';
 import 'package:allyyuegbk/models/products_model.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,7 +25,7 @@ class _OneProductState extends State<OneProduct> {
                 return Center(child: CircularProgressIndicator(),);
 
               }else if(state is GetSingleProductSuccessState){
-                final product=BlocProvider.of<SingleProCubit>(context).oneProduct;
+                final product=state.oneProduct;
 
                 return Column(
                 children: [

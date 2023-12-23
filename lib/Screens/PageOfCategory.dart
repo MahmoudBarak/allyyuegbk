@@ -91,7 +91,7 @@ class _CategoryPageState extends State<CategoryPage> {
     ),
   );
 
-  Widget _items() => BlocBuilder<ShowCategory, ShowCategoryState>(
+  Widget _items() => BlocBuilder<SpecificCategoryCubit, specificCategoryState>(
     builder: (context, state) {
       if (state is LoadingCategoryState) {
         return Center(
@@ -106,9 +106,9 @@ class _CategoryPageState extends State<CategoryPage> {
               childAspectRatio: .6,
               mainAxisSpacing: 3,
               crossAxisSpacing: 3),
-          itemCount: BlocProvider.of<ShowCategory>(context).Categore.length,
+          itemCount: state.categore.length,
           itemBuilder: (context, index) {
-            final model = BlocProvider.of<ShowCategory>(context).Categore[index];
+            final model = state.categore[index];
             return _products(model);
           },
         );

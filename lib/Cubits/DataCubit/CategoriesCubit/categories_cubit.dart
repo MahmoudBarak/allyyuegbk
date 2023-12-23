@@ -8,17 +8,13 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   CategoriesCubit(this.networkServes) : super(IntialCategoriesState());
 
   Network networkServes;
-  List<dynamic> categories = [];
 
-  getCategories() async
-  {
+  getCategories() async {
     emit(LoadingCategoriesState());
-    try {
-      categories = await networkServes.getAllCategories();
-      emit(GetCategoriesSuccessState());
-    } on Exception catch (e) {
-      emit(GetCategoriesFailureState(e.toString()));
-      print(e);
-    }
+
+    var category = await networkServes.getAllCategories();
+    category.fold(
+        (failure) => emit(GetCategoriesFailureState(failure.errMassage)),
+        (category) => emit(GetCategoriesSuccessState(category)));
   }
 }

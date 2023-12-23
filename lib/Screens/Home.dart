@@ -109,19 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 5,
                 ),
                 itemCount:
-                    BlocProvider.of<CategoriesCubit>(context).categories.length,
+                    state.categories.length,
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   String categories =
-                      BlocProvider.of<CategoriesCubit>(context).categories[index];
+                      state.categories[index];
                   return _bar(categories);
                 },
               );
             } else if (state is GetCategoriesFailureState) {
               return Text('${state.errmessage}');
             } else {
-              print(BlocProvider.of<CategoriesCubit>(context).categories);
               return Text('${state.toString()}');
             }
           },
@@ -142,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.grey.shade200),
         child: InkWell(
           onTap: () {
-            BlocProvider.of<ShowCategory>(context).getCategory(categories);
+            BlocProvider.of<SpecificCategoryCubit>(context).getCategory(categories);
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) =>CategoryPage()));
           },
@@ -167,9 +166,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   childAspectRatio: .6,
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 3),
-              itemCount: BlocProvider.of<ProductCubit>(context).prodcuts.length,
+              itemCount: state.prodcuts.length,
               itemBuilder: (context, index) {
-                final model = BlocProvider.of<ProductCubit>(context).prodcuts[index];
+                final model = state.prodcuts[index];
+                print(model);
                 return _products(model);
               },
             );
@@ -197,8 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ));
 
 
-          // Navigator.of(context)
-          //     .push(MaterialPageRoute(builder: (context) => ));
         },
         child: Container(
           margin: EdgeInsets.all(4),

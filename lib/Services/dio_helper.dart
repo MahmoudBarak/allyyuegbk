@@ -1,46 +1,80 @@
-import 'package:allyyuegbk/models/cartModel.dart';
+import 'package:allyyuegbk/Services/errors/faliuer.dart';
 import 'package:allyyuegbk/models/products_model.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
 //
 class Network {
-  Future<List<ProductsModel>> getProducts() async {
-    final responsep = await Dio().get('https://fakestoreapi.com/products');
-    final listOfProducts = List.from(responsep.data)
-        .map((e) => ProductsModel.fromjson(e))
-        .toList();
+  Future<Either< Failure,List<ProductsModel>>> getProducts() async {
+    try{
+      final responsep = await Dio().get('https://fakestoreapi.com/products');
+      final listOfProducts = List.from(responsep.data)
+          .map((e) => ProductsModel.fromjson(e))
+          .toList();
 
-    return listOfProducts;
+      return right(listOfProducts);
+    }on Exception catch (e)
+    {
+      if(e is DioException){
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
+
+
+    }
   }
 
-  Future<List<dynamic>> getAllCategories() async {
-    final response =
-        await Dio().get('https://fakestoreapi.com/products/categories');
+  Future<Either<Failure,List<dynamic>>> getAllCategories() async {
+    try{
+      final response =
+          await Dio().get('https://fakestoreapi.com/products/categories');
 
-    return response.data;
+      return right (response.data);
+    }on Exception catch (e)
+    {
+      if(e is DioException){
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
+
+
+    }
   }
 
-  Future<List<CartModel>> getAllCarts() async {
-    final responsep = await Dio().get('https://fakestoreapi.com/carts');
-    final listOfCarts =
-        List.from(responsep.data).map((e) => CartModel.fromJson(e)).toList();
-    return listOfCarts;
+  Future<Either<Failure,ProductsModel>> getSingleProduct(int productId) async{
+    try{
+      final response =
+          await Dio().get('https://fakestoreapi.com/products/$productId');
+      final product = ProductsModel.fromjson(response.data);
+      return right(product);
+    }on Exception catch (e)
+    {
+      if(e is DioException){
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
 
+
+    }
   }
-  Future<ProductsModel> getSingleProduct(int productId) async{
+  Future<Either<Failure,List<ProductsModel>>> getspecificCategory(String cat) async {
+    try{
+      final responsep =
+          await Dio().get('https://fakestoreapi.com/products/category/${cat}');
+      final category = List.from(responsep.data)
+          .map((e) => ProductsModel.fromjson(e))
+          .toList();
 
-    final response=await Dio().get('https://fakestoreapi.com/products/$productId');
-    final product=ProductsModel.fromjson(response.data);
-    return product;
+      return right(category);
+    }on Exception catch (e)
+    {
+      if(e is DioException){
+        return left(ServerFailure.fromDioError(e));
+      }
+      return left(ServerFailure(e.toString()));
 
-  }
-  Future<List<ProductsModel>> getCategory(String cat) async {
-    final responsep = await Dio().get('https://fakestoreapi.com/products/category/${cat}');
-    final category = List.from(responsep.data)
-        .map((e) => ProductsModel.fromjson(e))
-        .toList();
 
-    return category;
+    }
   }
 
 

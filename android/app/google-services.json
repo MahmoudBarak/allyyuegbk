@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "907989749687",
+    "project_id": "ally-y3gbk",
+    "storage_bucket": "ally-y3gbk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907989749687:android:842cc5638c63afeda16232",
+        "android_client_info": {
+          "package_name": "com.allyuegbk.allyyuegbk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_WyHk_J56Q2WpEBbOTsEXiPpBmZ0KiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
