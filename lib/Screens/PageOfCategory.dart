@@ -3,9 +3,8 @@ import 'package:allyyuegbk/Cubits/DataCubit/CategoriesCubit/Show_categories_Stat
 import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_cubit.dart';
 import 'package:allyyuegbk/Screens/Cart.dart';
 import 'package:allyyuegbk/Screens/Product.dart';
-import 'package:allyyuegbk/models/cartModel.dart';
+import 'package:allyyuegbk/customeWidget/shimmerWidget.dart';
 import 'package:allyyuegbk/models/products_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 class CategoryPage extends StatefulWidget {
@@ -93,11 +92,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   Widget _items() => BlocBuilder<SpecificCategoryCubit, specificCategoryState>(
     builder: (context, state) {
-      if (state is LoadingCategoryState) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      } else if (state is GetCategorySuccessState) {
+       if (state is GetCategorySuccessState) {
         return GridView.builder(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -116,11 +111,9 @@ class _CategoryPageState extends State<CategoryPage> {
         return Text('${state.errmessage}');
 
       }
-      else {
-        return Center(
-          child: Text("Something Is Wrong"),
-        );
-      }
+
+        return ShimmerWidget();
+
     },
   );
   Widget _products(ProductsModel model) => InkWell(

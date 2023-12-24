@@ -6,10 +6,12 @@ import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/product_State.dart';
 import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_cubit.dart';
 import 'package:allyyuegbk/Screens/PageOfCategory.dart';
 import 'package:allyyuegbk/Screens/Product.dart';
+import 'package:allyyuegbk/customeWidget/shimmerWidget.dart';
 import 'package:allyyuegbk/models/products_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'Cart.dart';
 
@@ -21,7 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,36 +97,30 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       );
   Widget _barList() => Container(
-    height: 50,
-    child: BlocBuilder<CategoriesCubit , CategoriesState>(
+        height: 50,
+        child: BlocBuilder<CategoriesCubit, CategoriesState>(
           builder: (context, state) {
-            if (state is LoadingCategoriesState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is GetCategoriesSuccessState) {
+            if (state is GetCategoriesSuccessState) {
               return ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(
                   width: 5,
                 ),
-                itemCount:
-                    state.categories.length,
+                itemCount: state.categories.length,
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  String categories =
-                      state.categories[index];
+                  String categories = state.categories[index];
                   return _bar(categories);
                 },
               );
             } else if (state is GetCategoriesFailureState) {
               return Text('${state.errmessage}');
             } else {
-              return Text('${state.toString()}');
+              return _shimmerBar();
             }
           },
         ),
-  );
+      );
   Widget _bar(String categories) => Container(
         margin: EdgeInsets.all(10),
         height: 40,
@@ -141,9 +136,10 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.grey.shade200),
         child: InkWell(
           onTap: () {
-            BlocProvider.of<SpecificCategoryCubit>(context).getCategory(categories);
+            BlocProvider.of<SpecificCategoryCubit>(context)
+                .getCategory(categories);
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) =>CategoryPage()));
+                .push(MaterialPageRoute(builder: (context) => CategoryPage()));
           },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -153,11 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
   Widget _items() => BlocBuilder<ProductCubit, DataState>(
         builder: (context, state) {
-          if (state is LoadingProductsState) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is GetProductsSuccessState) {
+          if (state is GetProductsSuccessState) {
             return GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -173,15 +165,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 return _products(model);
               },
             );
-          }else if (state is GetProductsFailureState){
+          } else if (state is GetProductsFailureState) {
             return Text('${state.errmessage}');
+          }
+            return ShimmerWidget();
 
-          }
-          else {
-            return Center(
-              child: Text("Something Is Wrong"),
-            );
-          }
         },
       );
   Widget _products(ProductsModel model) => InkWell(
@@ -191,12 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: () {
           BlocProvider.of<SingleProCubit>(context).getSingleProduct(model.id!);
 
-
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => OneProduct()
-          ));
-
-
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => OneProduct()));
         },
         child: Container(
           margin: EdgeInsets.all(4),
@@ -270,4 +254,21 @@ class _HomeScreenState extends State<HomeScreen> {
         aspectRatio: 2.0,
         enlargeCenterPage: true,
       ));
+  Widget _shimmer() => Shimmer.fromColors(
+        baseColor: Colors.grey.shade200,
+        highlightColor: Colors.grey.shade100,
+        child: Container(
+          margin: EdgeInsets.all(10),
+          height: 40,
+          width: 50,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.grey),
+        ),
+      );
+  Widget _shimmerBar() => ListView.separated(
+      itemBuilder: (context, index) => _shimmer(),
+      separatorBuilder: (context, index) => SizedBox(
+            width: 5,
+          ),
+      itemCount: 5);
 }
