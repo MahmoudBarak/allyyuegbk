@@ -21,10 +21,7 @@ class _OneProductState extends State<OneProduct> {
           scrollDirection: Axis.vertical,
           child: BlocBuilder<SingleProCubit, SingleState>(
             builder: (context, state) {
-              if(state is LoadingSingleProductState){
-                return Center(child: CircularProgressIndicator(),);
-
-              }else if(state is GetSingleProductSuccessState){
+             if(state is GetSingleProductSuccessState){
                 final product=state.oneProduct;
 
                 return Column(
@@ -35,11 +32,10 @@ class _OneProductState extends State<OneProduct> {
                 ],
                 );
               }else if (state is GetSingleProductFailureState) {
-                return Text('Somthing WR');
+                return Text('${state.erorr}');
 
-              }  else{
-                return Text('Check Code');
               }
+              return Center(child: CircularProgressIndicator(),);
             },
           ),
         ),
@@ -96,13 +92,20 @@ class _OneProductState extends State<OneProduct> {
                     fontSize: 25,
                   ),
                 ),
-                Text(
-                  'Rating:  ${product.rating!.rate.toString()!}',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 18,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      'Rating:  ${product.rating!.rate.toString()!}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Icon(Icons.star,color: Colors.amberAccent,),
+                  ],
+
                 ),
+
 
 
 

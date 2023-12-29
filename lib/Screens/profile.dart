@@ -1,4 +1,6 @@
 import 'package:allyyuegbk/Screens/editProfile.dart';
+import 'package:allyyuegbk/models/users.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -67,48 +69,54 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget _profile() {
-    return Container(
-      width: 350,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Name"),
-          Divider(
-            thickness: 1,
-            color: Colors.black,
+    return StreamBuilder<List<Users>>(
+      stream: null,
+      builder: (context, snapshot) {
+        return Container(
+          width: 350,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Name"),
+              Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("Email"),
+              Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("phoneNumber"),
+              Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text("address"),
+              Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Text("Email"),
-          Divider(
-            thickness: 1,
-            color: Colors.black,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text("phoneNumber"),
-          Divider(
-            thickness: 1,
-            color: Colors.black,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text("address"),
-          Divider(
-            thickness: 1,
-            color: Colors.black,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-        ],
-      ),
+        );
+      }
     );
   }
+
   Widget _logOut(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

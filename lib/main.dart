@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context)=>AppCubit()),
         BlocProvider(create: (context)=>AuthCubit(Auth())),
 
-        BlocProvider(create: (context)=>ProductCubit(Network())),
+        BlocProvider(create: (context)=>ProductCubit(Network())..getProducts()),
         BlocProvider(create: (context)=>SingleProCubit(Network())),
-        BlocProvider(create: (context)=>CategoriesCubit (Network())),
+        BlocProvider(create: (context)=>CategoriesCubit (Network())..getCategories()),
         BlocProvider(create: (context)=> SpecificCategoryCubit(Network())),
 
 

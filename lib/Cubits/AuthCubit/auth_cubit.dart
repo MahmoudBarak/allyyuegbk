@@ -1,5 +1,6 @@
 import 'package:allyyuegbk/Cubits/AuthCubit/Auth_state.dart';
 import 'package:allyyuegbk/fireBase/auth_class.dart';
+import 'package:allyyuegbk/models/users.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,12 +30,12 @@ class AuthCubit extends Cubit<AuthState>{
     }
 
   }
-  signUp({required String email, required String password, required String name, required String phone})
+  signUp(Users user ,{ required String password})
   async
   {
     emit(RegisterLoading());
     try{
-     await auth.registerWithEmailAndPassword(email: email,password: password,name: name,phone: phone);
+     await auth.registerWithEmailAndPassword(user,password: password);
      emit(RegisterSuccess());
     }on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -43,6 +44,7 @@ class AuthCubit extends Cubit<AuthState>{
         emit(RegisterFailure(errorMessage: 'The account already exists for that email.'));
 
       }
+      return emit(RegisterFailure(errorMessage: e.toString()));
     } catch (e) {
       emit(RegisterFailure(errorMessage: 'something wrong'));
 

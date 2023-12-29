@@ -108,7 +108,7 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         );
       }else if (state is GetCategoryFailureState){
-        return Text('${state.errmessage}');
+        return Center(child: Text('${state.errmessage}'));
 
       }
 
