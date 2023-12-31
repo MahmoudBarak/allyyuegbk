@@ -161,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: state.prodcuts.length,
               itemBuilder: (context, index) {
                 final model = state.prodcuts[index];
-                print(model);
                 return _products(model);
               },
             );

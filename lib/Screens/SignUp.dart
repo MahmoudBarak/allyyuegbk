@@ -185,9 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     if (validateForm()) {
                                       final user=Users( name:_name.text, email: _email.text, phone: _phone.text, address: _address.text);
                                       BlocProvider.of<AuthCubit>(context)
-                                          .signUp(user,
-
-                                              password: _password.text.toString(),
+                                          .signUp(user, password: _password.text.toString(),
 
                                               );
                                     }

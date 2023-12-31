@@ -1,7 +1,6 @@
 import 'package:allyyuegbk/Screens/editProfile.dart';
+import 'package:allyyuegbk/fireBase/auth_class.dart';
 import 'package:allyyuegbk/models/users.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -12,21 +11,13 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Users? user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) =>EditProfile() ));
-          },
-          icon: Icon(
-            Icons.edit,
-          ),
-        ),
         elevation: 0,
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.dark_mode))],
       ),
@@ -35,20 +26,14 @@ class _ProfileState extends State<Profile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _image(),
-                ],
-              ),
               SizedBox(
-                height:60,
+                height: 30,
               ),
               _profile(),
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               _logOut()
-
-
             ],
           ),
         ),
@@ -56,71 +41,104 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget _image() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: CircleAvatar(
-          backgroundColor: Colors.orangeAccent,
-          radius: 50,
-          child: Icon(
-            Icons.person,
-          )),
-    );
-  }
-
   Widget _profile() {
-    return StreamBuilder<List<Users>>(
-      stream: null,
-      builder: (context, snapshot) {
-        return Container(
-          width: 350,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Name"),
-              Divider(
-                thickness: 1,
-                color: Colors.black,
+    return FutureBuilder<Users?>(
+        future: Auth().getUsersData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState== ConnectionState.waiting) {
+            return Text('Loading');
+          } else if (snapshot.hasData) {
+            final user = snapshot.data;
+            return Container(
+              width: 350,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(children: [
+                          CircleAvatar(
+                              backgroundColor: Colors.orangeAccent,
+                              radius: 50,
+                              child: Icon(
+                                Icons.person,
+                              )),
+                          Positioned(
+                              bottom: 0,
+                              right: 4,
+                              child: CircleAvatar(
+                                radius: 22,
+                                backgroundColor: Colors.white,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.orangeAccent,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => EditProfile(
+                                                    name: user!.name,
+                                                    phone: user.phone,
+                                                    email: user.email,
+                                                    address: user.address,
+                                                  )));
+                                    },
+                                    icon: Icon(
+                                      Icons.edit,
+                                    ),
+                                  ),
+                                ),
+                              ))
+                        ]),
+                      )
+                    ],
+                  ),
+                  Text(user!.name),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(user.email),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(user.phone),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(user.address),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("Email"),
-              Divider(
-                thickness: 1,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("phoneNumber"),
-              Divider(
-                thickness: 1,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("address"),
-              Divider(
-                thickness: 1,
-                color: Colors.black,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
-        );
-      }
-    );
+            );
+          }
+          return Text("Something Wrong${snapshot.data}");
+        });
   }
 
-  Widget _logOut(){
+  Widget _logOut() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-
       children: [
         ElevatedButton(
           onPressed: () {},

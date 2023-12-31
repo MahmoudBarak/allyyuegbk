@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class Auth
 {
   FirebaseAuth auth=FirebaseAuth.instance;
-  FirebaseFirestore store=FirebaseFirestore.instance;
+  FirebaseFirestore stor=FirebaseFirestore.instance;
 
 
 
@@ -16,12 +16,16 @@ class Auth
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: user.email, password: password,);
       addaUserToFireStore(user,userCredential.user!.uid);
+      print(user.docId);
 
   }
   void addaUserToFireStore(Users user,String id) {
-    CollectionReference users = store.collection('users');
+    final users = stor.collection('users').doc(id);
+
+
     user.id=id;
-    users.add(user.toJson());
+    user.docId=users.id;
+    users.set(user.toJson());
 
   }
   signInWithEmailAndPassword({required String email, required String password})async
@@ -33,6 +37,34 @@ class Auth
 
 
   }
+
+
+  Future<Users?> getUsersData()
+ async {
+
+    final getDoc =  stor.collection('users').doc(auth.currentUser!.uid);
+    final date=await getDoc.get();
+    return Users.fromJson(date.data()!);
+
+
+  }
+
+
+  void updateData(Users us)
+
+  {
+    final getDoc= stor.collection('users').doc(auth.currentUser!.uid);
+    getDoc.update({
+      'name':us.name ,
+      'address':us.address,
+      'phone':us.phone,
+      'email':us.email,
+
+    });
+
+
+  }
+
 }
 
 
