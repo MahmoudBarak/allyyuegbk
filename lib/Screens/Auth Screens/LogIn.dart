@@ -1,10 +1,10 @@
 import 'package:allyyuegbk/Cubits/AuthCubit/Auth_state.dart';
 import 'package:allyyuegbk/Cubits/AuthCubit/auth_cubit.dart';
-import 'package:allyyuegbk/Screens/SignUp.dart';
+import 'package:allyyuegbk/Screens/Auth%20Screens/SignUp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bottomNavigationBar.dart';
+import '../bottomNavigationBar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LogInSuccess) {
+          ScaffoldMessenger.of(context).clearSnackBars();
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (_) => Bar(),
@@ -38,6 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
             content: Text(state.errorMessage),
             backgroundColor: Colors.red,
           ));
+        }else if (state is LogInLoading) {
+          ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Row(
+            children: [
+              CircularProgressIndicator(color: Colors.orange,),
+              Text('Loading',style: TextStyle(color: Colors.black),),
+            ],
+          ),backgroundColor: Colors.white,));
         }
       },
       builder: (context, state) {
@@ -66,11 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Image.asset(
                           'assets/Images/Logo.png',
-                          height: 300,
+                          height: MediaQuery.of(context).size.height/3,
                         ),
-                        SizedBox(height: 40),
+                        SizedBox(height: MediaQuery.of(context).size.height/30),
                         Container(
-                          width: 300,
+                          width: MediaQuery.of(context).size.width/1.2,
                           child: Column(
                             children: [
                               TextFormField(
@@ -88,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     suffixIcon: Icon(Icons.email)),
                               ),
                               SizedBox(
-                                height: 30,
+                                height: MediaQuery.of(context).size.height/20,
                               ),
                               TextFormField(
                                 onTap: () {
@@ -113,10 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         : Icon(Icons.visibility)),
                               ),
                               SizedBox(
-                                height: 40,
+                                height: MediaQuery.of(context).size.height/20,
                               ),
                               Container(
-                                width: 200,
+                                width: MediaQuery.of(context).size.width/2,
                                 child: TextButton(
                                   child: Text('Log in',
                                       style: TextStyle(
@@ -134,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               SizedBox(
-                                height: 20,
+                                height: MediaQuery.of(context).size.height/30,
                               ),
                               Divider(
                                 color: Colors.black,

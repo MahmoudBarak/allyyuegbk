@@ -7,14 +7,17 @@ import 'package:allyyuegbk/Cubits/DataCubit/ProductsCubit/single_product_cubit.d
 import 'package:allyyuegbk/Screens/Splash.dart';
 import 'package:allyyuegbk/Services/dio_helper.dart';
 import 'package:allyyuegbk/fireBase/auth_class.dart';
-import 'package:allyyuegbk/models/products_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+late SharedPreferences sharedPreferences;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences=await SharedPreferences.getInstance();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,7 +27,6 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -32,13 +34,10 @@ class MyApp extends StatelessWidget {
       [
         BlocProvider(create: (context)=>AppCubit()),
         BlocProvider(create: (context)=>AuthCubit(Auth())),
-
         BlocProvider(create: (context)=>ProductCubit(Network())..getProducts()),
         BlocProvider(create: (context)=>SingleProCubit(Network())),
         BlocProvider(create: (context)=>CategoriesCubit (Network())..getCategories()),
         BlocProvider(create: (context)=> SpecificCategoryCubit(Network())),
-
-
       ] ,
       child: MaterialApp(
       debugShowCheckedModeBanner: false,

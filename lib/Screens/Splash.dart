@@ -1,4 +1,6 @@
-import 'package:allyyuegbk/Screens/LogIn.dart';
+import 'package:allyyuegbk/Screens/Auth%20Screens/LogIn.dart';
+import 'package:allyyuegbk/Screens/bottomNavigationBar.dart';
+import 'package:allyyuegbk/main.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: AnimatedSplashScreen(
         splash: 'assets/Images/Logo.png',
-        nextScreen: LoginScreen(),
+        nextScreen:  sharedPreferences.getString('id')==null?LoginScreen():Bar(),
         duration: 5000,
         splashTransition: SplashTransition.fadeTransition,
         splashIconSize: 300,

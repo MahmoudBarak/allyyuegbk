@@ -1,3 +1,4 @@
+import 'package:allyyuegbk/main.dart';
 import 'package:allyyuegbk/models/users.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +18,7 @@ class Auth
         email: user.email, password: password,);
       addaUserToFireStore(user,userCredential.user!.uid);
       print(user.docId);
+      sharedPreferences.setString('id', userCredential.user!.uid.toString());
 
   }
   void addaUserToFireStore(Users user,String id) {
@@ -34,8 +36,12 @@ class Auth
           email: email,
           password: password
       );
+      sharedPreferences.setString('id', userCredential.user!.uid.toString());
 
 
+  }
+  signOut()async{
+    await auth.signOut();
   }
 
 
@@ -56,7 +62,6 @@ class Auth
     final getDoc= stor.collection('users').doc(auth.currentUser!.uid);
     getDoc.update({
       'name':us.name ,
-      'address':us.address,
       'phone':us.phone,
       'email':us.email,
 

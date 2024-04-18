@@ -1,7 +1,7 @@
 import 'package:allyyuegbk/Cubits/AuthCubit/Auth_state.dart';
 import 'package:allyyuegbk/fireBase/auth_class.dart';
 import 'package:allyyuegbk/models/users.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -4,7 +4,6 @@ class Users {
   String name;
   String phone;
   String email;
-  String address;
 
   Users(
       {this.id = '',
@@ -12,7 +11,7 @@ class Users {
       required this.name,
       required this.email,
       required this.phone,
-      required this.address});
+      });
   factory Users.fromJson(Map<String, dynamic> json) {
     return Users(
       id: json['id'],
@@ -20,7 +19,7 @@ class Users {
       name: json['name'],
       email: json['email'],
       phone: json['phone'],
-      address: json['address'],
+
     );
   }
   Map<String, dynamic> toJson() => {
@@ -29,6 +28,5 @@ class Users {
         'name': name,
         'email': email,
         'phone': phone,
-        'address': address,
       };
 }

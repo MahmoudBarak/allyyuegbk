@@ -31,11 +31,6 @@ class Bar extends StatelessWidget {
                   textColor: Colors.orange,
                 ),
                 GButton(
-                  icon: Icons.favorite,
-                  text: 'WishList',
-                  textColor: Colors.orange,
-                ),
-                GButton(
                   icon: Icons.person,
                   text: 'Profile',
                   textColor: Colors.orange,
